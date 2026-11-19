@@ -1,54 +1,77 @@
-import React, { use } from "react";
-import { Link, useLocation } from "react-router";
+import React from "react";
+import { Link } from "react-router";
 
-const Card = ({ singleCard }) => {
-  //const data = use(cardPromise);
-  //console.log(data);
-  console.log(singleCard);
-
-  const { image, name, speciality, experience, id, license, available } =
-    singleCard;
-
-  const location = useLocation();
+const Card = ({ singleCard, onCancel, showCancel = false }) => {
+  const {
+    image,
+    name,
+    speciality,
+    experience,
+    id,
+    license,
+    available,
+    consultationFee,
+  } = singleCard;
 
   return (
-    <div className=" bg-gray-200 border-0 p-1 m-2 rounded-xl ">
-      <div className="  text-black flex gap-3 ">
-        <div>
-          <figure className="border rounded-xl">
-            <img
-              className="w-[250px] h-[250px] p-4  rounded-4xl"
-              src={image}
-              alt="Movie"
-            />
-          </figure>
+    <article className="group overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl sm:p-5">
+      <div className="flex flex-col gap-5 sm:flex-row">
+        <div className="relative h-64 shrink-0 overflow-hidden rounded-xl bg-gray-100 sm:h-52 sm:w-44">
+          <img
+            src={image}
+            alt={name}
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          />
         </div>
-        <div className="card-body border rounded-xl">
-          <div className="badge badge-soft badge-info">
-            {experience}+ Experience
-          </div>
-          <p className="badge badge-soft badge-success">{available}</p>
-          <p className="text-2xl font-semibold">{name}</p>
-          <p className="font-semilight">{speciality}</p>
-          <p className="font-semilight">@ {license}</p>
-          <div>
-            {location.pathname === "/" && (
-              <Link to={`/cardDetails/${id}`}>
-                <button className=" rounded-2xl btn btn-wide bg-gray-300 text-blue-600">
-                  View Details
-                </button>
-              </Link>
-            )}
 
-            {location.pathname === "/bookings" && (
-              <button className="btn btn-soft btn-secondary rounded-2xl">
+        <div className="flex flex-1 flex-col">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
+              {experience}+ Years Experience
+            </span>
+            <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+              {available}
+            </span>
+          </div>
+
+          <h2 className="mt-4 text-xl font-bold text-gray-900 transition group-hover:text-emerald-800">
+            {name}
+          </h2>
+
+          <p className="mt-1 font-medium text-emerald-700">{speciality}</p>
+
+          <div className="mt-4 space-y-2 text-sm text-gray-500">
+            <p>▣ License: {license}</p>
+            {consultationFee !== undefined && (
+              <p>
+                Consultation fee:{" "}
+                <span className="font-bold text-gray-800">
+                  ৳{consultationFee}
+                </span>
+              </p>
+            )}
+          </div>
+
+          <div className="mt-auto flex flex-wrap gap-3 pt-5">
+            {showCancel ? (
+              <button
+                onClick={() => onCancel(id)}
+                className="w-full rounded-xl border border-red-200 px-5 py-3 text-sm font-bold text-red-600 transition hover:bg-red-50"
+              >
                 Cancel Appointment
               </button>
+            ) : (
+              <Link
+                to={`/cardDetails/${id}`}
+                className="w-full rounded-xl bg-emerald-800 px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-emerald-900"
+              >
+                View Profile & Details →
+              </Link>
             )}
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

@@ -1,23 +1,41 @@
 import React from "react";
+import { Link, useRouteError } from "react-router";
 
 const ErrorPage = () => {
+  const error = useRouteError();
+
   return (
-    <div role="alert" className="alert alert-error">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6 shrink-0 stroke-current"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-      <span>Error! This page has not been found or link maybe broken</span>
-    </div>
+    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-5">
+      <div className="max-w-lg text-center">
+        <p className="text-8xl font-black tracking-tight text-emerald-800">
+          404
+        </p>
+
+        <div className="mx-auto mt-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 text-3xl">
+          ⚠
+        </div>
+
+        <h1 className="mt-6 text-3xl font-extrabold text-gray-900">
+          Page Not Found
+        </h1>
+
+        <p className="mt-4 leading-7 text-gray-500">
+          Sorry! The page you're looking for doesn't exist, may have been moved,
+          or the URL might be incorrect.
+        </p>
+
+        {error?.statusText && (
+          <p className="mt-3 text-sm text-gray-400">{error.statusText}</p>
+        )}
+
+        <Link
+          to="/"
+          className="mt-8 inline-flex rounded-full bg-emerald-800 px-8 py-4 font-bold text-white transition hover:bg-emerald-900"
+        >
+          ← Back to Homepage
+        </Link>
+      </div>
+    </main>
   );
 };
 

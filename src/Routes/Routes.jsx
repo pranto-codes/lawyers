@@ -1,6 +1,6 @@
 import React from "react";
-
 import { createBrowserRouter } from "react-router";
+
 import Root from "../pages/Root/Root";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import Home from "../pages/Home/Home";
@@ -10,21 +10,26 @@ import Bookings from "../pages/Bookings/Bookings";
 import Blogs from "../pages/Blogs/Blogs";
 import Contact from "../pages/Contact/Contact";
 
+const getLawyers = async () => {
+  const response = await fetch("/data.json");
+
+  if (!response.ok) {
+    throw new Error("Failed to load lawyer data");
+  }
+
+  return response.json();
+};
+
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: Root,
-    errorElement: <ErrorPage></ErrorPage>,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        loader: () => fetch("data.json"),
-        path: "/",
+        loader: getLawyers,
         Component: Home,
-      },
-      {
-        path: "about",
-        Component: About,
       },
       {
         path: "about",
@@ -39,13 +44,13 @@ export const router = createBrowserRouter([
         Component: Contact,
       },
       {
-        path: "/cardDetails/:id",
-        loader: () => fetch("./data.json"),
+        path: "cardDetails/:id",
+        loader: getLawyers,
         Component: CardDetails,
       },
       {
         path: "bookings",
-        loader: () => fetch("./data.json"),
+        loader: getLawyers,
         Component: Bookings,
       },
     ],
